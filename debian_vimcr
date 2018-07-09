@@ -1,0 +1,169 @@
+set nocompatible              " be iMproved, required
+filetype off                  " required
+
+" set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+" alternatively, pass a path where Vundle should install plugins
+"call vundle#begin('~/some/path/here')
+
+" let Vundle manage Vundle, required
+Plugin 'VundleVim/Vundle.vim'
+
+" The following are examples of different formats supported.
+" Keep Plugin commands between vundle#begin/end.
+" plugin from http://vim-scripts.org/vim/scripts.html
+" Plugin 'L9'
+
+" different version somewhere else.
+" Plugin 'ascenator/L9', {'name': 'newL9'}
+"
+" Keep Plugin commands between vundle#begin/end.
+
+"install nerdtree from git hub
+Plugin 'scrooloose/nerdtree.git'
+
+" install light line from git
+Plugin 'itchyny/lightline.vim.git'
+
+" install vim fugitive
+" Plugin 'tpope/vim-fugitive'
+
+" install commentary
+" Plugin 'tpope/vim-commentary.git'
+
+" install surround
+" Plugin 'tpope/vim-surround'
+
+" install vim-pencil plugin
+Plugin 'reedes/vim-pencil'
+
+" install goyo plugin
+" Plugin 'junegunn/goyo.vim.git'
+
+"install YouCompleteMe from git
+Plugin 'https://github.com/Valloric/YouCompleteMe'
+
+" install the colorsheme
+Plugin 'https://github.com/vim-scripts/xoria256.vim.git'
+
+" install command-t 
+Plugin 'https://github.com/wincent/command-t.git'
+
+" install syntastic
+Plugin 'https://github.com/vim-syntastic/syntastic.git'
+
+" install flake 8
+Plugin 'https://github.com/nvie/vim-flake8.git'
+
+" install vimtex
+Plugin 'https://github.com/lervag/vimtex'
+
+" install syntax highlighting for vim
+Plugin 'Lasall/vim-setlx'
+
+" install snipmate
+" Plugin 'garbas/vim-snipmate'
+
+" All of your Plugins must be added before the following line
+call vundle#end()            " required
+filetype plugin indent on    " required
+" To ignore plugin indent changes, instead use:
+"filetype plugin on
+"
+" Brief help
+" :PluginList       - lists configured plugins
+" :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
+" :PluginSearch foo - searches for foo; append `!` to refresh local cache
+" :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
+"
+" see :h vundle for more details or wiki for FAQ
+" Put your non-Plugin stuff after this line
+
+
+
+" show line numbers
+set nu
+syntax on
+
+set laststatus=2 "show the lightline
+" change the theme of the lightline plugin
+" keep before the colorscheme
+let g:lightline = {
+     \ 'colorscheme': 'one',
+     \ }
+
+" set colorscheme to one dark
+colorscheme xoria256
+set background=dark
+
+:set guifont=monospace:h12
+
+" set encoding
+set encoding=utf-8
+set fileencoding=utf-8
+
+" Open NERDTree when vim starts without a file specifed
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+
+" Open NERDTree when vim opens with directory
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | endif
+
+let mapleader = ","
+let maplocalleader = "\\"
+
+" map NERDTree window to ctrl-n
+map <C-n> :NERDTreeToggle<CR>
+
+" close Vim when nerdtree is the last window
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+
+" set tabs 
+set expandtab           " enter spaces when tab is pressed
+set tabstop=4           " use 4 spaces to represent tab
+set softtabstop=4
+set shiftwidth=4        " number of spaces to use for auto indent
+set autoindent          " copy indent from current line when starting a new line
+
+" make backspaces more powerfull
+set backspace=indent,eol,start
+set showcmd "show partial command in status line
+
+
+" syntastic settings
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+
+
+" python sepcific option
+" pep8 requirements
+au BufNewFile,BufRead *.py
+    \ set tabstop=4
+    \ set softtabstop=4
+    \ set shiftwidth=4
+    \ set textwidth=79
+    \ set expandtab
+    \ set autoindent
+    \ set fileformat=unix
+
+"python with virtualenv support
+python3 << EOF
+import os
+import sys
+if 'VIRTUAL_ENV' in os.environ:
+  project_base_dir = os.environ['VIRTUAL_ENV']
+  activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
+  execfile(activate_this, dict(__file__=activate_this))
+EOF
+
+
+let python_highlight_all=1
+let g:syntastic_python_exec = '/usr/bin/python3'

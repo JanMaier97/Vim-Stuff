@@ -4,135 +4,148 @@ filetype off                  " required
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
-" alternatively, pass a path where Vundle should install plugins
-"call vundle#begin('~/some/path/here')
 
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
 
-" The following are examples of different formats supported.
-" Keep Plugin commands between vundle#begin/end.
-" plugin from http://vim-scripts.org/vim/scripts.html
-" Plugin 'L9'
+" color schemes
+" colorschemes
+" Plugin 'jnurmine/Zenburn'
+" Plugin 'altercation/vim-colors-solarized'
 
-" different version somewhere else.
-" Plugin 'ascenator/L9', {'name': 'newL9'}
-"
-" Keep Plugin commands between vundle#begin/end.
+Plugin 'noahfrederick/vim-noctu'
+Plugin 'morhetz/gruvbox'
 
-"install nerdtree from git hub
+
+" git stuff
+" git commands inside vim
+Plugin 'tpope/vim-fugitive'
+
+" display changes inside vim
+Plugin 'airblade/vim-gitgutter'
+
+" fuzzy finder
+Plugin 'wincent/command-t'
+
+" emmet, html plugin
+Plugin 'mattn/emmet-vim.git'
+
+" surround plugin
+Plugin 'tpope/vim-surround'
+
+" statusline
+Plugin 'itchyny/lightline.vim'
+
+" syntax highlighting
+" Plugin 'vim-syntastic/syntastic'
+
+" commenting plugin
+Plugin 'tpope/vim-commentary.git'
+
+" filebrowser inside vim
 Plugin 'scrooloose/nerdtree.git'
 
-" install light line from git
-Plugin 'itchyny/lightline.vim.git'
+" autocompletion
+Plugin 'Valloric/YouCompleteMe'
 
-" install vim fugitive
-" Plugin 'tpope/vim-fugitive'
-
-" install commentary
-" Plugin 'tpope/vim-commentary.git'
-
-" install surround
-" Plugin 'tpope/vim-surround'
-
-" install vim-pencil plugin
+" writing plugin
 Plugin 'reedes/vim-pencil'
 
-" install goyo plugin
-" Plugin 'junegunn/goyo.vim.git'
+" multiple cursors
+" Plugin 'terryma/vim-multiple-cursors'
 
-"install YouCompleteMe from git
-Plugin 'https://github.com/Valloric/YouCompleteMe'
+" tag management
+" install tagbar
+Plugin 'majutsushi/tagbar'
 
-" install the colorsheme
-Plugin 'https://github.com/vim-scripts/xoria256.vim.git'
+" install tag managaer
+Plugin 'ludovicchabant/vim-gutentags'
 
-" install command-t 
-Plugin 'https://github.com/wincent/command-t.git'
+" writing latex
+Plugin 'lervag/vimtex'
 
-" install syntastic
-Plugin 'https://github.com/vim-syntastic/syntastic.git'
-
-" install flake 8
-Plugin 'https://github.com/nvie/vim-flake8.git'
-
-" install vimtex
-Plugin 'https://github.com/lervag/vimtex'
-
-" install syntax highlighting for vim
-Plugin 'Lasall/vim-setlx'
-
-" install snipmate
-" Plugin 'garbas/vim-snipmate'
+" commands for unix commandline
+Plugin 'tpope/vim-eunuch'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
-" To ignore plugin indent changes, instead use:
-"filetype plugin on
-"
-" Brief help
-" :PluginList       - lists configured plugins
-" :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
-" :PluginSearch foo - searches for foo; append `!` to refresh local cache
-" :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
-"
-" see :h vundle for more details or wiki for FAQ
-" Put your non-Plugin stuff after this line
 
-
-
-" show line numbers
+" vim settings
 set nu
 syntax on
-
-set laststatus=2 "show the lightline
-" change the theme of the lightline plugin
-" keep before the colorscheme
-let g:lightline = {
-     \ 'colorscheme': 'one',
-     \ }
-
-" set colorscheme to one dark
-colorscheme xoria256
-set background=dark
-
-:set guifont=monospace:h12
-
-" set encoding
 set encoding=utf-8
 set fileencoding=utf-8
 
+" change the backspace behaviour to delete any text
+set backspace=indent,eol,start
+
+let mapleader=" "
+let maplocalleader="\\"
+
+
+" tabs and spaces
+set tabstop=4
+set softtabstop=4
+set shiftwidth=4
+set expandtab
+set autoindent
+
+
+" splitting behaviour
+set splitbelow
+set splitright
+
+" split navigations
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-L> <C-W><C-L>
+nnoremap <C-H> <C-W><C-H>
+
+" lightline settings  \
+set laststatus=2 " show the lightline
+let g:lightline = {
+    \ 'active': {
+    \   'left': [ [ 'mode', 'paste' ],
+    \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
+    \ },
+    \ 'component_function': {
+    \   'gitbranch': 'fugitive#head',
+    \   'ctagstatus': 'gutentags#statusline()'
+    \ },
+    \ }
+
+" colorscheme settings
+set background=dark
+colorscheme gruvbox
+let g:gruvbox_vert_split = 'bg1'
+let g:gruvbox_sign_column = 'bg0'
+
 " Open NERDTree when vim starts without a file specifed
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+"autocmd StdinReadPre * let s:std_in=1
+"autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 
 " Open NERDTree when vim opens with directory
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | endif
-
-let mapleader = ","
-let maplocalleader = "\\"
+"autocmd StdinReadPre * let s:std_in=1
+"autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | endif
 
 " map NERDTree window to ctrl-n
-map <C-n> :NERDTreeToggle<CR>
+map <leader>n :NERDTreeToggle<CR>
 
 " close Vim when nerdtree is the last window
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
-" set tabs 
-set expandtab           " enter spaces when tab is pressed
-set tabstop=4           " use 4 spaces to represent tab
-set softtabstop=4
-set shiftwidth=4        " number of spaces to use for auto indent
-set autoindent          " copy indent from current line when starting a new line
 
-" make backspaces more powerfull
-set backspace=indent,eol,start
-set showcmd "show partial command in status line
+" tagbar settings
+nmap <F8> :TagbarToggle<CR>
+" let g:tagbar_ctags_bin = 'C:\ctags58\ctags.exe'
+
+" gutentags settings
+"let g:gutentags_ctags_executable = 'C:\ctags58\ctags.exe'
 
 
 " syntastic settings
+" let g:syntastic_java_checkers = []
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
@@ -143,27 +156,11 @@ let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 
 
-" python sepcific option
-" pep8 requirements
-au BufNewFile,BufRead *.py
-    \ set tabstop=4
-    \ set softtabstop=4
-    \ set shiftwidth=4
-    \ set textwidth=79
-    \ set expandtab
-    \ set autoindent
-    \ set fileformat=unix
-
-"python with virtualenv support
-python3 << EOF
-import os
-import sys
-if 'VIRTUAL_ENV' in os.environ:
-  project_base_dir = os.environ['VIRTUAL_ENV']
-  activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
-  execfile(activate_this, dict(__file__=activate_this))
-EOF
-
-
-let python_highlight_all=1
-let g:syntastic_python_exec = '/usr/bin/python3'
+" vimtex settings
+let g:vimtex_complete_enabled = 1
+let g:vimtex_complete_close_braces = 1
+if !exists('g:ycm_semantic_triggers')
+    let g:ycm_semantic_triggers = {}
+endif
+let g:ycm_semantic_triggers.tex = g:vimtex#re#youcompleteme
+let g:vimtex_view_method = 'zathura'
